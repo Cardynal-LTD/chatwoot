@@ -54,10 +54,9 @@ RUN apk update && apk add --no-cache \
     bash \
     shared-mime-info
 
-# Installation de Node.js et pnpm via corepack
+# Installation de Node.js et pnpm via npm (plus fiable sur Alpine)
 RUN apk add --no-cache nodejs npm && \
-    corepack enable && \
-    corepack prepare pnpm@${PNPM_VERSION} --activate
+    npm install -g pnpm@${PNPM_VERSION}
 
 # Configuration du gem bundler
 RUN gem install bundler:${BUNDLER_VERSION}
@@ -143,9 +142,10 @@ RUN apk update && apk add --no-cache \
     curl \
     nodejs \
     npm \
-    shared-mime-info \
-    && corepack enable \
-    && corepack prepare pnpm@${PNPM_VERSION} --activate
+    shared-mime-info
+
+# Installer pnpm via npm (pas besoin de corepack sur Alpine)
+RUN npm install -g pnpm@${PNPM_VERSION}
 
 # Copier les gems depuis le stage de build
 COPY --from=pre-builder /usr/local/bundle /usr/local/bundle
