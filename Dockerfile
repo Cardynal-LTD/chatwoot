@@ -1,46 +1,33 @@
-# Étape 1 — Builder les assets frontend
-FROM node:20-alpine AS frontend
+FROM ruby:3.4.4
 
-WORKDIR /app
-COPY . .
-
-RUN npm install -g pnpm
-RUN pnpm install
-RUN pnpm build
-
-
-# Étape 2 — Builder l’application Rails + copier entrypoints officiels
-FROM ruby:3.4.4 AS backend
-
-# Install OS deps
-RUN apk add --no-cache \
-  build-base \
-  postgresql-dev \
+# OS dependencies
+RUN apt-get update -y && apt-get install -y \
+  curl build-essential git \
   postgresql-client \
-  git \
-  imagemagick \
-  tzdata \
-  nodejs \
-  yarn
+  nodejs npm \
+  imagemagick tzdata
+
+# Install JS package managers
+RUN npm install -g yarn pnpm
 
 WORKDIR /app
 
-# Copier code
+# Copy your ENTIRE fork (avec ton branding)
 COPY . .
-
-# Installer gems
-RUN bundle install --without development test
-
-# Copier assets compilés du frontend
-COPY --from=frontend /app/public/packs ./public/packs
-
-# Copier entrypoints Chatwoot (IMPORTANT)
-COPY docker/entrypoints /usr/local/bin/chatwoot-entrypoints
-RUN chmod +x /usr/local/bin/chatwoot-entrypoints/*.sh
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
 
+# Install Ruby deps
+RUN bundle config set without 'development test' \
+ && bundle install
+
+# Install JS deps
+RUN pnpm install
+
+# Build frontend
+RUN pnpm build
+
 EXPOSE 3000
 
-ENTRYPOINT ["/usr/local/bin/chatwoot-entrypoints/rails.sh"]
+CMD ["bundle", "exec", "rails", "s", "-b", "0.0.0.0", "-p", "3000"]
