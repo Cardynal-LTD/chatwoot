@@ -39,5 +39,7 @@ RUN mkdir -p tmp/pids tmp/sockets log
 ENV PORT=3000
 EXPOSE 3000
 
+RUN bundle exec rake assets:precompile
+
 # --- LANCEMENT SERVEUR (PUMA + PORT RAILWAY + FIX server.pid) ---
 CMD ["sh", "-c", "mkdir -p tmp/pids tmp/sockets log && rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"]
