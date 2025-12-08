@@ -1,50 +1,45 @@
 FROM ruby:3.4.4
 
-# --- OS DEPS ---
+# --- SYSTEM DEPENDENCIES ---
 RUN apt-get update -y && apt-get install -y \
   curl build-essential git \
   postgresql-client \
   imagemagick tzdata \
-  ca-certificates \
-  && rm -rf /var/lib/apt/lists/*
+  ca-certificates
 
-# --- NODE 23 (requis par Chatwoot) ---
+# --- INSTALL NODE 23 ---
 RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - \
-  && apt-get install -y nodejs \
-  && rm -rf /var/lib/apt/lists/*
+  && apt-get install -y nodejs
 
-# --- PACKAGE MANAGERS JS ---
+# --- GLOBAL PACKAGE MANAGERS ---
 RUN npm install -g yarn pnpm
 
 WORKDIR /app
 
-# On copie tout (monorepo + workspace pnpm)
+# --- COPY PROJECT ---
 COPY . .
 
-ENV RAILS_ENV=production \
-    NODE_ENV=production \
-    RAILS_SERVE_STATIC_FILES=true \
-    RAILS_LOG_TO_STDOUT=true
+ENV RAILS_ENV=production
+ENV NODE_ENV=production
 
-# --- GEMs ---
+# --- INSTALL RUBY DEPS ---
 RUN bundle config set without 'development test' \
-  && bundle install --jobs=4 --retry=3
+  && bundle install
 
-# --- JS DEPS ---
+# --- INSTALL JS DEPS ---
 RUN pnpm install
 
-# --- BUILD FRONT COMPLET (pas juste le SDK) ---
-RUN pnpm run build
+# --- Chatwoot SDK build (optional but recommended) ---
+RUN pnpm run build:sdk
 
-# --- PREP RUNTIME ---
+# --- FRONTEND + VITE ASSETS (MAIN BUILD) ---
+RUN bundle exec rake assets:precompile
+
+# --- PREP RUNTIME FOLDERS ---
 RUN mkdir -p tmp/pids tmp/sockets log
 
-# Port par défaut (Railway override avec $PORT)
 ENV PORT=3000
 EXPOSE 3000
 
-# --- LANCEMENT SERVEUR ---
-# - recrée les dossiers au cas où
-# - supprime un éventuel ancien server.pid
-# - lance Puma avec la config Chatwoot
+# --- START SERVER ON RAILWAY ---
 CMD ["sh", "-c", "mkdir -p tmp/pids tmp/sockets log && rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"]
