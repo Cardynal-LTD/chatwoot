@@ -1,56 +1,75 @@
 const {
-  blue,
-  blueDark,
-  green,
-  greenDark,
-  yellow,
-  yellowDark,
   slate,
   slateDark,
-  red,
-  redDark,
+  grass,
+  grassDark,
+  amber,
+  amberDark,
+  ruby,
+  rubyDark,
   violet,
   violetDark,
+  blackA,
+  whiteA,
 } = require('@radix-ui/colors');
 
+// Définition de ta palette Monochrome (Cardynal Theme)
+const wootMonochrome = {
+  woot1: '#FAFAFA',   // Très clair
+  woot2: '#F5F5F5',
+  woot3: '#EEEEEE',
+  woot4: '#E0E0E0',
+  woot5: '#BDBDBD',
+  woot6: '#9E9E9E',
+  woot7: '#757575',
+  woot8: '#616161',
+  woot9: '#424242',   // Couleur principale
+  woot10: '#333333',
+  woot11: '#212121',
+  woot12: '#111111',  // Très foncé
+};
+
 export const colors = {
+  // Remplacement du bleu par le monochrome
   woot: {
-    25: blue.blue2,
-    50: blue.blue3,
-    75: blue.blue4,
-    100: blue.blue5,
-    200: blue.blue7,
-    300: blue.blue8,
-    400: blueDark.blue11,
-    500: blueDark.blue10,
-    600: blueDark.blue9,
-    700: blueDark.blue8,
-    800: blueDark.blue6,
-    900: blueDark.blue2,
+    25: wootMonochrome.woot1,
+    50: wootMonochrome.woot2,
+    75: wootMonochrome.woot3,
+    100: wootMonochrome.woot4,
+    200: wootMonochrome.woot6,
+    300: wootMonochrome.woot7,
+    400: wootMonochrome.woot8,
+    500: wootMonochrome.woot9,  // Couleur principale (Brand)
+    600: wootMonochrome.woot10,
+    700: wootMonochrome.woot11,
+    800: wootMonochrome.woot12,
+    900: '#000000',
   },
+  // Green -> Grass (Plus moderne)
   green: {
-    50: greenDark.green12,
-    100: green.green6,
-    200: green.green7,
-    300: green.green8,
-    400: greenDark.green10,
-    500: greenDark.green9,
-    600: green.green10,
-    700: green.green11,
-    800: greenDark.green7,
-    900: greenDark.green6,
+    50: grassDark.grass12,
+    100: grass.grass6,
+    200: grass.grass7,
+    300: grass.grass8,
+    400: grassDark.grass10,
+    500: grassDark.grass9,
+    600: grass.grass10,
+    700: grass.grass11,
+    800: grassDark.grass7,
+    900: grassDark.grass6,
   },
+  // Yellow -> Amber
   yellow: {
-    50: yellow.yellow2,
-    100: yellow.yellow3,
-    200: yellow.yellow5,
-    300: yellowDark.yellow10,
-    400: yellowDark.yellow9,
-    500: yellowDark.yellow11,
-    600: yellow.yellow8,
-    700: yellowDark.yellow7,
-    800: yellowDark.yellow2,
-    900: yellowDark.yellow1,
+    50: amber.amber2,
+    100: amber.amber3,
+    200: amber.amber5,
+    300: amberDark.amber10,
+    400: amberDark.amber9,
+    500: amberDark.amber11,
+    600: amber.amber8,
+    700: amberDark.amber7,
+    800: amberDark.amber2,
+    900: amberDark.amber1,
   },
   slate: {
     25: slate.slate2,
@@ -78,17 +97,18 @@ export const colors = {
     800: slateDark.slate7,
     900: slateDark.slate2,
   },
+  // Red -> Ruby
   red: {
-    50: redDark.red12,
-    100: red.red6,
-    200: red.red8,
-    300: redDark.red11,
-    400: redDark.red10,
-    500: red.red9,
-    600: red.red10,
-    700: red.red11,
-    800: redDark.red8,
-    900: red.red12,
+    50: rubyDark.ruby12,
+    100: ruby.ruby6,
+    200: ruby.ruby8,
+    300: rubyDark.ruby11,
+    400: rubyDark.ruby10,
+    500: ruby.ruby9,
+    600: ruby.ruby10,
+    700: ruby.ruby11,
+    800: rubyDark.ruby8,
+    900: ruby.ruby12,
   },
   violet: {
     50: violet.violet1,
@@ -135,6 +155,9 @@ export const colors = {
       12: 'rgb(var(--iris-12) / <alpha-value>)',
     },
 
+    // Note: Pour un vrai monochrome, on mappe 'blue' vers des variables slate
+    // ou on garde blue si on veut juste un accent très léger.
+    // Ici je garde la structure pour la compatibilité CSS variables.
     blue: {
       1: 'rgb(var(--blue-1) / <alpha-value>)',
       2: 'rgb(var(--blue-2) / <alpha-value>)',
@@ -211,7 +234,10 @@ export const colors = {
     },
 
     black: '#000000',
-    brand: '#2781F6',
+    // MODIFICATION IMPORTANTE : Changement de la couleur de marque (Brand)
+    // De '#2781F6' (Bleu) vers woot9 (Gris foncé/Monochrome)
+    brand: wootMonochrome.woot9, 
+    
     background: 'rgb(var(--background-color) / <alpha-value>)',
     solid: {
       1: 'rgb(var(--solid-1) / <alpha-value>)',
