@@ -30,7 +30,7 @@ RUN bundle config set without 'development test' \
 RUN pnpm install
 
 # --- BUILD FRONTEND (REAL Chatwoot build command) ---
-RUN pnpm run build:assets
+RUN pnpm run build:sdk
 
 EXPOSE 3000
 
