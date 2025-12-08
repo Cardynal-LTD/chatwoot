@@ -1,46 +1,50 @@
 FROM ruby:3.4.4
 
-# --- OS DEPENDENCIES ---
+# --- OS DEPS ---
 RUN apt-get update -y && apt-get install -y \
   curl build-essential git \
   postgresql-client \
   imagemagick tzdata \
-  ca-certificates
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
-# --- NODEJS 23.x ---
+# --- NODE 23 (requis par Chatwoot) ---
 RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - \
-  && apt-get install -y nodejs
+  && apt-get install -y nodejs \
+  && rm -rf /var/lib/apt/lists/*
 
-# --- GLOBAL JS PACKAGE MANAGERS ---
+# --- PACKAGE MANAGERS JS ---
 RUN npm install -g yarn pnpm
 
 WORKDIR /app
 
-# --- COPY PROJECT ---
+# On copie tout (monorepo + workspace pnpm)
 COPY . .
 
-ENV RAILS_ENV=production
-ENV NODE_ENV=production
+ENV RAILS_ENV=production \
+    NODE_ENV=production \
+    RAILS_SERVE_STATIC_FILES=true \
+    RAILS_LOG_TO_STDOUT=true
 
-# --- RUBY GEMS ---
+# --- GEMs ---
 RUN bundle config set without 'development test' \
-  && bundle install
+  && bundle install --jobs=4 --retry=3
 
-# --- JS DEPENDENCIES ---
-RUN pnpm install --frozen-lockfile
+# --- JS DEPS ---
+RUN pnpm install
 
-# --- BUILD FRONTEND (Chatwoot officiel utilise build:assets) ---
-RUN pnpm run build:sdk
-# Si tu veux la version normale Chatwoot : pnpm run build:assets
+# --- BUILD FRONT COMPLET (pas juste le SDK) ---
+RUN pnpm run build
 
-# --- PREP RUNTIME DIRECTORIES ---
+# --- PREP RUNTIME ---
 RUN mkdir -p tmp/pids tmp/sockets log
 
+# Port par défaut (Railway override avec $PORT)
 ENV PORT=3000
 EXPOSE 3000
 
-# ❌ NE SURTOUT PAS FAIRE rake assets:precompile → Chatwoot n’utilise pas Sprockets
-# RUN bundle exec rake assets:precompile  <-- supprime cette ligne
-
-# --- SERVER LAUNCH ---
-CMD ["sh", "-c", "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"]
+# --- LANCEMENT SERVEUR ---
+# - recrée les dossiers au cas où
+# - supprime un éventuel ancien server.pid
+# - lance Puma avec la config Chatwoot
+CMD ["sh", "-c", "mkdir -p tmp/pids tmp/sockets log && rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"]
