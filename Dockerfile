@@ -19,10 +19,6 @@ RUN bundle install --without development test
 # Install JS deps
 RUN pnpm install
 
-# Precompile assets
-ARG SECRET_KEY_BASE
-ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
-RUN bundle exec rails assets:precompile
 
 EXPOSE 3000
 
