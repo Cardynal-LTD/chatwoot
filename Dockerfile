@@ -1,32 +1,36 @@
 FROM ruby:3.4.4
 
-# OS dependencies
+# --- INSTALL OS DEPS ---
 RUN apt-get update -y && apt-get install -y \
   curl build-essential git \
   postgresql-client \
-  nodejs npm \
-  imagemagick tzdata
+  imagemagick tzdata \
+  ca-certificates
 
-# Install JS package managers
+# --- INSTALL NODE 23 (Chatwoot l'exige) ---
+RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - \
+  && apt-get install -y nodejs
+
+# --- INSTALL PACKAGE MANAGERS ---
 RUN npm install -g yarn pnpm
 
 WORKDIR /app
 
-# Copy your ENTIRE fork (avec ton branding)
+# --- COPY FULL PROJECT (including your branding) ---
 COPY . .
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
 
-# Install Ruby deps
+# --- INSTALL RUBY DEPENDENCIES ---
 RUN bundle config set without 'development test' \
  && bundle install
 
-# Install JS deps
+# --- INSTALL JS DEPENDENCIES ---
 RUN pnpm install
 
-# Build frontend
-RUN pnpm build
+# --- BUILD FRONTEND (REAL Chatwoot build command) ---
+RUN pnpm run build:assets
 
 EXPOSE 3000
 
