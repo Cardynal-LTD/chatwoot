@@ -2,6 +2,24 @@
 GlobalConfig.clear_cache
 ConfigLoader.new.process
 
+# Custom Cardynal Branding
+cardynal_configs = {
+  'LOGO' => 'https://cardynal.io/wp-content/uploads/2025/12/Capture_d_ecran_2025-12-09_a_17.26.45-removebg-preview.png',
+  'LOGO_DARK' => 'https://cardynal.io/wp-content/uploads/2025/12/Capture_d_ecran_2025-12-09_a_17.27.59-removebg-preview.png',
+  'LOGO_THUMBNAIL' => 'https://cardynal.io/wp-content/uploads/2025/09/cropped-favicon-16x16-1.png',
+  'BRAND_URL' => 'https://cardynal.io',
+  'WIDGET_BRAND_URL' => 'https://cardynal.io',
+  'BRAND_NAME' => 'Cardynal',
+  'INSTALLATION_NAME' => 'Cardynal'
+}
+
+cardynal_configs.each do |name, value|
+  config = InstallationConfig.find_by(name: name)
+  config&.update(serialized_value: { "value" => value }.with_indifferent_access)
+end
+GlobalConfig.clear_cache
+
+
 ## Seeds productions
 if Rails.env.production?
   # Setup Onboarding flow
