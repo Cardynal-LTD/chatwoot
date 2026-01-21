@@ -1,22 +1,22 @@
 # ------- Branding Related Config ------- #
 - name: INSTALLATION_NAME
-  value: 'Chatwoot'
+  value: 'Cardynal Chat'
 - name: LOGO_THUMBNAIL
-  value: '/brand-assets/logo_thumbnail.svg'
+  value: 'https://99f72e53c084496be268a7ed779498f1.cdn.bubble.io/f1765735839706x426560657176119800/favicon-16x16.png?_gl=1*1hbwkts*_gcl_au*MzkyNzM3NjU2LjE3Njg0NzY3Mzc.*_ga*MjExMjUxMTI5Mi4xNzY2NDg3MDY4*_ga_BFPVR2DEE2*czE3Njg4MzA2NDQkbzE2JGcxJHQxNzY4ODMwNjYzJGo0MSRsMCRoMA..'
 - name: LOGO
-  value: '/brand-assets/logo.svg'
+  value: 'https://99f72e53c084496be268a7ed779498f1.cdn.bubble.io/f1765453474789x874340220179412100/Capture_d_e%CC%81cran_2025-12-09_a%CC%80_17.26.45-removebg-preview.png?_gl=1*7unnrk*_gcl_au*MzkyNzM3NjU2LjE3Njg0NzY3Mzc.*_ga*MjExMjUxMTI5Mi4xNzY2NDg3MDY4*_ga_BFPVR2DEE2*czE3Njg4MzA2NDQkbzE2JGcxJHQxNzY4ODMwNjYzJGo0MSRsMCRoMA..'
 - name: LOGO_DARK
-  value: '/brand-assets/logo_dark.svg'
+  value: 'https://99f72e53c084496be268a7ed779498f1.cdn.bubble.io/f1765453488167x530274335521904400/Capture_d_e%CC%81cran_2025-12-09_a%CC%80_17.27.59-removebg-preview.png?_gl=1*1v2cxi3*_gcl_au*MzkyNzM3NjU2LjE3Njg0NzY3Mzc.*_ga*MjExMjUxMTI5Mi4xNzY2NDg3MDY4*_ga_BFPVR2DEE2*czE3Njg4MzA2NDQkbzE2JGcxJHQxNzY4ODMwODMzJGo2MCRsMCRoMA..'
 - name: BRAND_URL
-  value: 'https://www.chatwoot.com'
+  value: 'https://cardynal.io'
 - name: WIDGET_BRAND_URL
-  value: 'https://www.chatwoot.com'
+  value: 'https://cardynal.io'
 - name: BRAND_NAME
-  value: 'Chatwoot'
+  value: 'Cardynal.io'
 - name: TERMS_URL
-  value: 'https://www.chatwoot.com/terms-of-service'
+  value: 'https://cardynal.io/terms-of-service'
 - name: PRIVACY_URL
-  value: 'https://www.chatwoot.com/privacy-policy'
+  value: 'https://www.cardynal.io/privacy-policy'
 - name: DISPLAY_MANIFEST
   value: true
 # ------- End of Branding Related Config ------- #
